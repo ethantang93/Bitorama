@@ -2,11 +2,11 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
-class User(models.User):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField(max_length=50)
-    password = models.CharField(max_length=255)
+class User(User):
+    # first_name = models.CharField(max_length=30)
+    # last_name = models.CharField(max_length=30)
+    # email = models.EmailField(max_length=50)
+    # password = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -15,10 +15,10 @@ class Address(models.Model):
     street = models.CharField(max_length = 255)
     city = models.CharField(max_length = 255)
     state = models.CharField(max_length = 2)
-    zip_code = models.IntegerField(max_length = 10)
+    zip_code = models.IntegerField()
     apartment_num = models.CharField( max_length = 30)
-    address_type = models.IntegerField( max_length = 2)
-    owners = models.ManytoManyField('User',related_name = 'addresses')
+    address_type = models.IntegerField()
+    owners = models.ManyToManyField('User',related_name = 'addresses')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
