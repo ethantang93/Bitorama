@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
+<<<<<<< HEAD
 # class Item(models.model):
 #     price = models.IntegerField(max_length = 6)
 #     views = models.IntegerField(max_length = 255)
@@ -24,3 +25,9 @@ from django.db import models
 #     category = models..Charfiled(max_length = 50)
 #     created_at = models.DateTimeField(auto_now_add=True)
 #     updated_at = models.DateTimeField(auto_now=True)
+class Item(models.Model):
+    pass
+class Tagging(models.Model):
+    pass
+class Tag(models.Model):
+    pass
