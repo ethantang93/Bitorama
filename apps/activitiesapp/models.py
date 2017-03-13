@@ -3,14 +3,14 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from ..usersapp.models import User, Address, Message, Connection
+from ..usersapp.models import Profile, Address, Message, Connection
 from ..itemsapp.models import Item, Tagging, Tag
 
 
 class Activity(models.Model):
-    type_of = models.IntegerField(max_length=2)
-    giver = models.ForeignKey('User', related_name='activity_giver')
-    receiver = models.ForeignKey('User', related_name='activity_receiver')
+    type_of = models.IntegerField()
+    giver = models.ForeignKey('Profile', related_name='activity_giver')
+    receiver = models.ForeignKey('Profile', related_name='activity_receiver')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

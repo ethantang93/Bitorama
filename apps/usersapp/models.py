@@ -1,14 +1,13 @@
 from __future__ import unicode_literals
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-class User(User):
-    # first_name = models.CharField(max_length=30)
-    # last_name = models.CharField(max_length=30)
-    # email = models.EmailField(max_length=50)
-    # password = models.CharField(max_length=255)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete = models.CASCADE)
     phone = models.CharField(max_length=30)
-    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class Address(models.Model):
