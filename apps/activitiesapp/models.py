@@ -7,16 +7,32 @@ from ..usersapp.models import User, Address, Message, Connection
 from ..itemsapp.models import Item, Tagging, Tag
 
 
+class ActivityQuerySet(models.QuerySet):
+    def userid(self, id):
+        return self.filter(owner=id)
+
+    def itemid(self, id):
+        return self.filter(subject=id)
+
+    def transactionid(self, id):
+        # return self.filter(transaction_activity=id)
+        pass
+
+class ActivityManager(models.Manager):
+    def new_activity(self, data):
+        pass
+
 class Activity(models.Model):
-    type_of = models.IntegerField(max_length=2)
-    giver = models.ForeignKey('User', related_name='activity_giver')
-    receiver = models.ForeignKey('User', related_name='activity_receiver')
+    type_of = models.IntegerField()
+    owner = models.ForeignKey('User', related_name='user_activity')
+    subject = models.ForeignKey('Item', related_name='item_activity')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class Transaction(models.Model):
+    type_of = models.IntegerField()
     relation = models.ForeignKey('Activity', related_name='transaction_activity')
-    bid = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
