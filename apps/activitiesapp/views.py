@@ -1,24 +1,39 @@
 from django.shortcuts import render, redirect
+from models import Activity, Transaction, Review
 
 # Create your views here.
 def index(request):
-    pass
+    activities = Activity.objects.all()
+    reviews = activities.reviews.all()
+    transactions = activities.transactions.all()
+    context = {
+        'activities': activities,
+        'reviews': reviews,
+        'transactions': transactions
+    }
+    return context
 
 def get(request):
     pass
 
 def create(request):
     if request.method == 'POST':
-        pass
+        Activity.objects.new_activity(request.POST)
+        return redirect('/item')
+    return redirect('/')
 
 def delete(request, id):
     pass
 
 def getUser(request, id):
-    pass
+    activity = Activity.objects.get_user(id)
+    context = {
+        'activity': activity
+    }
+    return context
 
 def getItem(request, id):
-    pass
+    Activity.objects.itemid(id)
 
 def getUserReviews(request, id):
     pass
