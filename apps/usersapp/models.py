@@ -31,5 +31,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=100)
 
 class Connection(models.Model):
-    followers = models.ForeignKey('User',related_name = 'follower')
-    followeds = models.ForeignKey('User',related_name = '')
+    follower = models.ForeignKey('User',related_name = 'is_following')
+    followed = models.ForeignKey('User',related_name = 'followed_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
