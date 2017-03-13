@@ -33,7 +33,7 @@ def getUser(request, id):
     return context
 
 def getItem(request, id):
-    Activity.objects.itemid(id)
+    result = Activity.objects.itemid(id)
 
 def getUserReviews(request, id):
     pass
