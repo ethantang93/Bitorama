@@ -6,5 +6,4 @@ urlpatterns = [
     url(r'^register$', views.register),
     url(r'^userInfo$', views.getInfo),
     url(r'^home$', views.home)
-
 ]
