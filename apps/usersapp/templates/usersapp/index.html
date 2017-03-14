@@ -13,6 +13,13 @@
         <input type="text" name="username" value="">
         <p>password </p>
         <input type="text" name="password" value="">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
         <input type="submit" name="" value="submit">
         <p><a href="/users/register_page">New User? Register Here!</a></p>
       </form>

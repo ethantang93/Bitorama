@@ -13,7 +13,7 @@ class ProfileManager(UserManager):
             return (False, errors)
         # check if there is an exsisting username
         try:
-            user = User.objects.get(username=request.Post['username'])
+            user = User.objects.get(username=request.POST['username'])
             errors.append('user name already exist!')
             return (False, errors)
         except:
@@ -32,7 +32,7 @@ class ProfileManager(UserManager):
         if not EMAIL_REGEX.match(request.POST['email']):
             errors.append("Please include a valid email.")
         if len(request.POST['password']) < 6 or request.POST['password'] != request.POST['confirm_pw']:
-            errors.append("Passwords must match and be at least 8 characters.")
+            errors.append("Passwords must match and be at least 6 characters.")
         return errors
 
 class Profile(User):

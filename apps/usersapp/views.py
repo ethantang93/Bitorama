@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from models import Profile
+from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request,'usersapp/index.html')
@@ -7,12 +8,15 @@ def register_page(request):
     return render(request,'usersapp/register.html')
 def dashboard(request):
     return render(request,'usersapp/dashboard.html')
+
 def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
         login_user(request,user[1])
         return redirect('/users/dashboard')
+    print_messages(request,user[1])
     return redirect('/users')
+
 def register(request):
     username = request.POST['username']
     email = request.POST['email']
@@ -20,7 +24,8 @@ def register(request):
     last_name = request.POST['last_name']
     password = request.POST['password']
 
-    if (Profile.objects.validateReg(request)[0]):
+    user = Profile.objects.validateReg(request)
+    if (user[0]):
         user = Profile.objects.create_user(username,email,password)
         user.last_name = last_name
         user.first_name = first_name
@@ -29,6 +34,7 @@ def register(request):
         return redirect('/users/dashboard')
 
     print("input is not valid")
+    print_messages(request,user[1])
     return redirect('/users/register_page')
 
 def login_user(request,user):
@@ -37,13 +43,19 @@ def login_user(request,user):
     'first_name' : user.first_name,
     'last_name' : user.last_name,
     'username' : user.username,
-    'email' : user.email,
+    'email' : user.email
     }
+    # request.session['user'] = user
     return redirect('/dashboard',request)
 
 def logout_user(request,user):
     request.session.pop['user']
     return redirect('/users')
+
+def print_messages(request, message_list):
+    for message in message_list:
+        messages.add_message(request, messages.INFO, message)
+
 def getInfo(request):
     print 'in the getinfo Method'
 
