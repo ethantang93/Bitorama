@@ -6,20 +6,15 @@
   </head>
   <body>
     <div class="container">
-      <form class="userReg" action="/users/register" method="post">
+      <h3>please log in</h3>
+      <form class="userReg" action="/users/login" method="post">
         {% csrf_token %}
-        <p>user name</p>
+        <p>username</p>
         <input type="text" name="username" value="">
-        <p>Email</p>
-        <input type="text" name="email" value="">
-        <p>first name </p>
-        <input type="text" name="first_name" value="">
-        <p>last name </p>
-        <input type="text" name="last_name" value="">
         <p>password </p>
         <input type="text" name="password" value="">
-        <input type="text" name="confirm_pw" value="">
         <input type="submit" name="" value="submit">
+        <p><a href="/users/register_page">New User? Register Here!</a></p>
       </form>
     </div>
   </body>
