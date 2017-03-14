@@ -1,8 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User,UserManager
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.contrib.auth import authenticate
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9\.\+_-]+@[a-zA-Z0-9\._-]+\.[a-zA-Z]*$')
 
@@ -21,6 +20,7 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
+<<<<<<< HEAD
         try:
             user = User.objects.get(email=request.POST['email'])
             print request.POST
@@ -32,6 +32,11 @@ class ProfileManager(UserManager):
         except ObjectDoesNotExist:
             pass
 
+=======
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            return (True, user)
+>>>>>>> 726ded3c8cabc23403a00556775e788b54319e17
         return (False, ["Email/password don't match."])
 
     def validate_inputs(self, request):
@@ -40,9 +45,8 @@ class ProfileManager(UserManager):
             errors.append("Please include a first and/or last name longer than two characters.")
         if not EMAIL_REGEX.match(request.POST['email']):
             errors.append("Please include a valid email.")
-        if len(request.POST['password']) < 8 or request.POST['password'] != request.POST['confirm_pw']:
+        if len(request.POST['password']) < 6 or request.POST['password'] != request.POST['confirm_pw']:
             errors.append("Passwords must match and be at least 8 characters.")
-
         return errors
 
 class Profile(User):
