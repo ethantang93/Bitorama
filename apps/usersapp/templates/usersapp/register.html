@@ -9,6 +9,13 @@
       <h2>please register</h2>
       <form class="userReg" action="/users/register" method="post">
         {% csrf_token %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
         <p>user name</p>
         <input type="text" name="username" value="">
         <p>Email</p>
