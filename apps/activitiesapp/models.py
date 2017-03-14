@@ -24,7 +24,7 @@ class ActivityManager(models.Manager):
 
 class Activity(models.Model):
     type_of = models.IntegerField()
-    owner = models.ForeignKey('User', related_name='user_activity')
+    owner = models.ForeignKey('Profile', related_name='user_activity')
     subject = models.ForeignKey('Item', related_name='item_activity')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
