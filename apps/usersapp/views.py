@@ -44,3 +44,10 @@ def login_user(request,user):
 def logout_user(request,user):
     request.session.pop['user']
     return redirect('/users')
+def getInfo(request):
+    print 'in the getinfo Method'
+
+    return render(request,'usersapp/user.html')
+
+def home(request):
+    return render(request, 'usersapp/home.html')
