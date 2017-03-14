@@ -20,7 +20,6 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
-<<<<<<< HEAD
         try:
             user = User.objects.get(email=request.POST['email'])
             print request.POST
@@ -32,11 +31,9 @@ class ProfileManager(UserManager):
         except ObjectDoesNotExist:
             pass
 
-=======
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             return (True, user)
->>>>>>> 726ded3c8cabc23403a00556775e788b54319e17
         return (False, ["Email/password don't match."])
 
     def validate_inputs(self, request):
