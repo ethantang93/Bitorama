@@ -19,3 +19,10 @@ def register(request):
 
     print("*"*100+"input is not valid")
     return redirect('/users')
+def getInfo(request):
+    print 'in the getinfo Method'
+
+    return render(request,'usersapp/user.html')
+
+def home(request):
+    return render(request, 'usersapp/home.html')
