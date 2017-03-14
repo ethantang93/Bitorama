@@ -1,10 +1,13 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
+class ItemManager(models.Manager):
+    def sellItem(self,request):
+        item = self.create(description=request.POST['description'],item_name=request.post['item_name'])
+        return(item)
 # Create your models here.
-<<<<<<< HEAD
 # class Item(models.model):
+#     item_name = models.CharField(max_length = 255)
 #     price = models.IntegerField(max_length = 6)
 #     views = models.IntegerField(max_length = 255)
 #     description = models.CharField(max_length = 255)
