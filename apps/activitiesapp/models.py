@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-from __future__ import unicode_literals
-
-from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
-
-# # from ..usersapp.models import Profile, Address, Message, Connection
-=======
-# from __future__ import unicode_literals
-#
-# from django.db import models
-# from django.core.validators import MaxValueValidator, MinValueValidator
-#
-# from ..usersapp.models import Profile, Address, Message, Connection
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
 # from ..itemsapp.models import Item, Tagging, Tag
 #
 #
@@ -33,11 +18,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 #
 # class Activity(models.Model):
 #     type_of = models.IntegerField()
-<<<<<<< HEAD
-#     owner = models.ForeignKey('User', related_name='user_activity')
-=======
 #     owner = models.ForeignKey('Profile', related_name='user_activity')
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
 #     subject = models.ForeignKey('Item', related_name='item_activity')
 #     created_at = models.DateTimeField(auto_now_add=True)
 #     updated_at = models.DateTimeField(auto_now=True)

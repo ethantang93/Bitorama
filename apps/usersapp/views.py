@@ -4,12 +4,6 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request,'usersapp/index.html')
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
 def register_page(request):
     return render(request,'usersapp/register.html')
 def dashboard(request):
@@ -23,10 +17,6 @@ def login(request):
     print_messages(request,user[1])
     return redirect('/users')
 
-<<<<<<< HEAD
-=======
->>>>>>> 3428d10c9f1b5bbac1c70cfb50a3934e684a40d4
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
 def register(request):
     username = request.POST['username']
     email = request.POST['email']
@@ -40,12 +30,7 @@ def register(request):
         user.last_name = last_name
         user.first_name = first_name
         user.save()
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
         return redirect('/admin')
-=======
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
         login_user(request,user)
         return redirect('/users/dashboard')
 
@@ -63,11 +48,6 @@ def login_user(request,user):
     }
     # request.session['user'] = user
     return redirect('/dashboard',request)
-<<<<<<< HEAD
-=======
->>>>>>> 3428d10c9f1b5bbac1c70cfb50a3934e684a40d4
->>>>>>> d2f50c65b3ccd7577923859ddb74e6912fc0d520
-
     print("*"*100+"input is not valid")
     return redirect('/users')
 
