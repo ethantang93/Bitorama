@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <h3>please log in</h3>
-      <form class="userReg" action="/users/login" method="post">
+      <form class="userReg" action="/login" method="post">
         {% csrf_token %}
         <p>username</p>
         <input type="text" name="username" value="">
@@ -21,7 +21,7 @@
         </ul>
         {% endif %}
         <input type="submit" name="" value="submit">
-        <p><a href="/users/register_page">New User? Register Here!</a></p>
+        <p><a href="/register_page">New User? Register Here!</a></p>
       </form>
     </div>
   </body>

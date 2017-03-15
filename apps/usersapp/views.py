@@ -4,8 +4,6 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request,'usersapp/index.html')
-<<<<<<< HEAD
-=======
 def register_page(request):
     return render(request,'usersapp/register.html')
 def dashboard(request):
@@ -15,11 +13,10 @@ def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
         login_user(request,user[1])
-        return redirect('/users/dashboard')
+        return redirect('/dashboard')
     print_messages(request,user[1])
-    return redirect('/users')
+    return redirect('/')
 
->>>>>>> 3428d10c9f1b5bbac1c70cfb50a3934e684a40d4
 def register(request):
     username = request.POST['username']
     email = request.POST['email']
@@ -33,15 +30,12 @@ def register(request):
         user.last_name = last_name
         user.first_name = first_name
         user.save()
-<<<<<<< HEAD
-        return redirect('/admin')
-=======
         login_user(request,user)
-        return redirect('/users/dashboard')
+        return redirect('/dashboard')
 
     print("input is not valid")
     print_messages(request,user[1])
-    return redirect('/users/register_page')
+    return redirect('/register_page')
 
 def login_user(request,user):
     print user
@@ -53,10 +47,6 @@ def login_user(request,user):
     }
     # request.session['user'] = user
     return redirect('/dashboard',request)
->>>>>>> 3428d10c9f1b5bbac1c70cfb50a3934e684a40d4
-
-    print("*"*100+"input is not valid")
-    return redirect('/users')
 
 def print_messages(request, message_list):
     for message in message_list:

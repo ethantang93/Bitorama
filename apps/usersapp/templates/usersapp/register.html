@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <h2>please register</h2>
-      <form class="userReg" action="/users/register" method="post">
+      <form class="userReg" action="/register" method="post">
         {% csrf_token %}
         {% if messages %}
         <ul class="messages">
@@ -28,7 +28,7 @@
         <input type="text" name="password" value="">
         <input type="text" name="confirm_pw" value="">
         <input type="submit" name="" value="submit">
-        <p><a href="/users/">already have account?</a></p>
+        <p><a href="/">already have account?</a></p>
       </form>
     </div>
   </body>
