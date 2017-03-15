@@ -17,7 +17,7 @@ class ProfileManager(UserManager):
             errors.append('user name already exist!')
             return (False, errors)
         except:
-            return (True, errors)
+            return (True, user)
 
     def validateLogin(self, request):
         try:
@@ -28,7 +28,7 @@ class ProfileManager(UserManager):
             if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
                 return (True, user)
 
-        except ObjectDoesNotExist:
+        except:
             pass
 
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
