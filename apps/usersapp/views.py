@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 def index(request):
     return render(request,'usersapp/index.html')
+
 def register_page(request):
     return render(request,'usersapp/register.html')
 def dashboard(request):
@@ -29,8 +30,6 @@ def register(request):
         user.last_name = last_name
         user.first_name = first_name
         user.save()
-        return redirect('/admin')
-
         login_user(request,user)
         return redirect('/users/dashboard')
 
