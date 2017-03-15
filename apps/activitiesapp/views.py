@@ -3,11 +3,9 @@ from models import Activity, Transaction, Review
 
 # Create your views here.
 def index(request):
-    activities = Activity.objects.all()
-    reviews = activities.reviews.all()
-    transactions = activities.transactions.all()
+    reviews = Review.objects.all()
+    transactions = Transaction.objects.all()
     context = {
-        'activities': activities,
         'reviews': reviews,
         'transactions': transactions
     }
