@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from apps.activitiesapp.models import Activity, Transaction, Review
+from models import Transaction, Review
 
 def index(request):
     reviews = Review.objects.all()
