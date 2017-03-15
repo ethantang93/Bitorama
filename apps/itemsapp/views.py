@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 # Create your views here.
-def index():
-    pass
+def index(request):
+    return render(request, 'bitorama/itemsPage.html')
 
-def getInfo():
+def create(request):
+    returnData = Items.objects.create(request)
     print 'in the get info method'

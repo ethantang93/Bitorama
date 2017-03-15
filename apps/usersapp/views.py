@@ -13,7 +13,7 @@ def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
         login_user(request,user[1])
-        return redirect('/users/dashboard')
+        return redirect('/dashboard')
     print_messages(request,user[1])
     return redirect('/users')
 
@@ -30,26 +30,26 @@ def register(request):
         user.last_name = last_name
         user.first_name = first_name
         user.save()
-        return redirect('/admin')
-        login_user(request,user)
-        return redirect('/users/dashboard')
+        login_user(request,user[1])
+        return redirect('/dashboard')
 
     print("input is not valid")
     print_messages(request,user[1])
-    return redirect('/users/register_page')
+    return redirect('/register_page')
 
 def login_user(request,user):
     print user
     request.session['user'] = {
+    'id' : user.id,
     'first_name' : user.first_name,
     'last_name' : user.last_name,
     'username' : user.username,
     'email' : user.email
     }
     # request.session['user'] = user
-    return redirect('/dashboard',request)
-    print("*"*100+"input is not valid")
-    return redirect('/users')
+    # return redirect('/dashboard')
+    # print("*"*100+"input is not valid")
+    # return redirect('/users')
 
 def print_messages(request, message_list):
     for message in message_list:

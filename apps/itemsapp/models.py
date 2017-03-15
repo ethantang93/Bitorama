@@ -9,8 +9,7 @@ class ItemManager(models.Manager):
 
 
 class ItemManager(models.Manager):
-    def sellItem(self,request):
-        # if !description
+    def create(self,request):
         # item = self.create(description=request.POST['description'],item_name=request.post['item_name'])
         # return(item)
         pass

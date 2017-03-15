@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <h2>please register</h2>
-      <form class="userReg" action="/users/register" method="post">
+      <form class="userReg" action="/register" method="post">
         {% csrf_token %}
         {% if messages %}
         <ul class="messages">
