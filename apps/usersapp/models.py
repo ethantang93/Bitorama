@@ -20,17 +20,6 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
-        # try:
-        #     user = User.objects.get(email=request.POST['email'])
-        #     print request.POST
-        #     # The email matched a record in the database, now test passwords
-        #     password = request.POST['password'].encode()
-        #     if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
-        #         return (True, user)
-        #
-        # except ObjectDoesNotExist:
-        #     pass
-
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             return (True, user)
@@ -53,6 +42,13 @@ class Profile(User):
 
     objects = ProfileManager()
 
+class AddressManager(models.Manager):
+    def validate_address(self,request):
+        errors = []
+        if len(request.POST['zip_code']) != 6:
+            errors.append("please enter a valid zip code")
+        return errors
+
 class Address(models.Model):
     street = models.CharField(max_length = 255)
     city = models.CharField(max_length = 255)
@@ -63,6 +59,35 @@ class Address(models.Model):
     owners = models.ManyToManyField('Profile',related_name = 'addresses')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = AddressManager()
+
+class MessageManager(models.Manager):
+    def validator(self,request):
+        errors = []
+        if request.POST['receiver'] is None:
+            errors.append('must specify a person to send this message to')
+        if request.POST['sender'] is None:
+            errors.append('must specify a sender of this message')
+        if len(request.POST['content']) <= 0:
+            errors.append('please dont send a empty message')
+        if len(request.POST['subject']) <= 0:
+            errors.append('please enter a subject of this message')
+        return errors
+    def get_user_messages(self,request):
+        messages = Message.objects.get(sender = request.POST['sender'])
+        return messages
+    def send_message(self,request,send_by,send_to):
+        errors = self.validator(request)
+        if len(errors) > 0 :
+            return (False, errors)
+        # send_by = Profile.objects.get(username = request.POST['sender'])
+        # send_to = Profile.objects.get(username = request.POST['receiver'])
+        message = self.create(sender = send_by, receiver = send_to, content=request.POST['content'], subject = request.POST['subject'])
+        return (True, message)
+    def delete_message(self,message_id):
+        message = Message.objects.get(id = message_id)
+        message.delete()
+        return ("delete successful")
 
 class Message(models.Model):
     sender = models.ForeignKey('Profile',related_name ='message_sent')
@@ -71,9 +96,20 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     subject = models.CharField(max_length=100)
+    objects = MessageManager()
+
+class ConnectionManager(models.Manager):
+    def follow(self,follower,followed):
+        follower = Profile.objects.get(id = follower)
+        followed = Profile.objects.get(id = followed)
+        connection = self.create(follower = follower, followed = followed)
+    def unfollow(self,connection_id):
+        connection = Connection.objects.get(id = connection_id)
+        connection.delete()
 
 class Connection(models.Model):
     follower = models.ForeignKey('Profile',related_name = 'is_following')
     followed = models.ForeignKey('Profile',related_name = 'followed_by')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = ConnectionManager()
