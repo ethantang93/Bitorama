@@ -4,6 +4,8 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request,'usersapp/index.html')
+def login_page(request):
+    return render(request,'usersapp/login.html')
 def register_page(request):
     return render(request,'usersapp/register.html')
 def dashboard(request):
@@ -40,6 +42,7 @@ def register(request):
 def login_user(request,user):
     print user
     request.session['user'] = {
+    'id' : user.id,
     'first_name' : user.first_name,
     'last_name' : user.last_name,
     'username' : user.username,
@@ -65,9 +68,12 @@ def send_message(request,sender,receiver):
     if (message[0]==False):
         print_messages(request,messages[1])
     return redirect(request,'/dashboard')
+
 def delete_message(request,message_id):
     Message.objects.delete_message(message_id)
+
 def follow(request,follower,followed):
     Connection.objects.follow(follower,followed)
+
 def unfollow(request,connection_id):
     Connection.objects.unfollow(connection_id)

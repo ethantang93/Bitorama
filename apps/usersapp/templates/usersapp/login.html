@@ -14,9 +14,13 @@
   </head>
   <body>
     <div class="container">
-      <h2>please register</h2>
-      <form class="userReg" action="/register" method="post">
+      <h3>please log in</h3>
+      <form class="userReg" action="/login" method="post">
         {% csrf_token %}
+        <p>username</p>
+        <input type="text" name="username" value="">
+        <p>password </p>
+        <input type="text" name="password" value="">
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -24,20 +28,10 @@
                 {% endfor %}
         </ul>
         {% endif %}
-        <p>user name</p>
-        <input type="text" name="username" value="">
-        <p>Email</p>
-        <input type="text" name="email" value="">
-        <p>first name </p>
-        <input type="text" name="first_name" value="">
-        <p>last name </p>
-        <input type="text" name="last_name" value="">
-        <p>password </p>
-        <input type="text" name="password" value="">
-        <input type="text" name="confirm_pw" value="">
         <input type="submit" name="" value="submit">
-        <p><a href="/login_page">already have account?</a></p>
+        <p><a href="/register_page">New User? Register Here!</a></p>
         <p><a href="/">Back</a></p>
+
       </form>
     </div>
   </body>

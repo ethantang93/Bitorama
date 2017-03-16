@@ -13,7 +13,7 @@ class ProfileManager(UserManager):
             return (False, errors)
         # check if there is an exsisting username
         try:
-            user = User.objects.get(username=request.POST['username'])
+            user = Profile.objects.get(username=request.POST['username'])
             errors.append('user name already exist!')
             return (False, errors)
         except:
@@ -35,11 +35,15 @@ class ProfileManager(UserManager):
             errors.append("Passwords must match and be at least 6 characters.")
         return errors
 
+    def get_all_profiles(self,request):
+        # returns all user EXCEPT the current user
+        users = Profiles.objects.all().exclude(id = request.session['user']['id'])
+        return users
+
 class Profile(User):
     # user = models.OneToOneField(User, on_delete = models.CASCADE)
     phone = models.CharField(max_length=30)
     updated_at = models.DateTimeField(auto_now=True)
-
     objects = ProfileManager()
 
 class AddressManager(models.Manager):
@@ -84,7 +88,7 @@ class MessageManager(models.Manager):
         # send_to = Profile.objects.get(username = request.POST['receiver'])
         message = self.create(sender = send_by, receiver = send_to, content=request.POST['content'], subject = request.POST['subject'])
         return (True, message)
-    def delete_message(self,message_id):
+    def delete_message(self,request,essage_id):
         message = Message.objects.get(id = message_id)
         message.delete()
         return ("delete successful")
@@ -99,11 +103,11 @@ class Message(models.Model):
     objects = MessageManager()
 
 class ConnectionManager(models.Manager):
-    def follow(self,follower,followed):
+    def follow(self,request,follower,followed):
         follower = Profile.objects.get(id = follower)
         followed = Profile.objects.get(id = followed)
         connection = self.create(follower = follower, followed = followed)
-    def unfollow(self,connection_id):
+    def unfollow(self,request,connection_id):
         connection = Connection.objects.get(id = connection_id)
         connection.delete()
 

@@ -3,9 +3,10 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
+    url(r'^login_page$', views.login_page),
+    url(r'^login$', views.login),
     url(r'^register_page$', views.register_page),
     url(r'^register$', views.register),
-    url(r'^login$', views.login),
     url(r'^dashboard$', views.dashboard),
     url(r'^userInfo$', views.getInfo),
     url(r'^send/(?P<sender_id>\d+)/(?P<receiver_id>\d+)$',views.send_message),
