@@ -24,7 +24,8 @@ class ActivityManager(models.Manager):
         return self.get_queryset().itemid(id)
 
 class TransactionQuerySet(ActivityQuerySet):
-    pass
+    def winning(self):
+        return self.get_queryset().filter(type_of=1)
 
 class TransactionManager(ActivityManager):
     def get_queryset(self):
@@ -34,6 +35,14 @@ class TransactionManager(ActivityManager):
         newTransaction = Transaction(data)
         newTransaction.save()
         return newTransaction
+
+    def winning_bid(self, user=False, item=False):
+        result = Transaction.winning()
+        if user:
+            result = result.by_user(user)
+        if item:
+            result = result.by_item(item)
+        return result
 
 class ReviewQuerySet(ActivityQuerySet):
     def rating_gt(self, rating):
