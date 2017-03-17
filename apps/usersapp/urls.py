@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^userInfo$', views.getInfo),
     url(r'^send/(?P<sender_id>\d+)/(?P<receiver_id>\d+)$', views.send_message),
     url(r'^del_message/(?P<message_id>\d+)$', views.delete_message),
-    url(r'^follow/(?P<follower_id>\d+)/(?P<followed_id>\d+)$', views.follow)
+    url(r'^follow/(?P<follower>\d+)/(?P<followed>\d+)$', views.follow),
+    url(r'^unfollow/(?P<follower>\d+)/(?P<followed>\d+)$',views.unfollow)
 ]

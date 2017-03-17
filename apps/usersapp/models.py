@@ -38,7 +38,8 @@ class ProfileManager(UserManager):
 
     def get_all_profiles(self, request):
         # returns all user EXCEPT the current user
-        users = Profile.objects.all().exclude(id=request.session['user']['id'])
+        users = Profile.objects.all()
+            # .exclude(id=request.session['user']['id'])
         return users
 
 
@@ -118,8 +119,8 @@ class ConnectionManager(models.Manager):
         followed = Profile.objects.get(id=followed)
         connection = self.create(follower=follower, followed=followed)
 
-    def unfollow(self, connection_id):
-        connection = Connection.objects.get(id = connection_id)
+    def unfollow(self, follower_id, followed_id):
+        connection = Connection.objects.get(follower=follower_id, followed=followed_id)
         connection.delete()
 
 
@@ -129,3 +130,8 @@ class Connection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ConnectionManager()
+
+from django import forms
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()

@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from models import Profile, Connection, Message
+from models import Profile, Connection, Message, UploadFileForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'usersapp/index.html')
+    users = Profile.objects.all()
+    context = {'users': users}
+    return render(request, 'usersapp/index.html', context)
 
 
 def login_page(request):
@@ -51,7 +54,6 @@ def register(request):
 
 
 def login_user(request, user):
-    print(user)
     request.session['user'] = {
         'id': user.id,
         'first_name': user.first_name,
@@ -96,7 +98,8 @@ def delete_message(request, message_id):
 
 def follow(request, follower, followed):
     Connection.objects.follow(follower, followed)
+    return redirect('/')
 
-
-def unfollow(request, connection_id):
-    Connection.objects.unfollow(connection_id)
+def unfollow(request, follower, followed):
+    Connection.objects.unfollow(follower, followed)
+    return redirect('/')

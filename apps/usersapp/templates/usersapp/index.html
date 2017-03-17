@@ -1,54 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-    <title>Starter Template for Bootstrap</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  </head>
+    <title>Welcome to Bitorama</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
 
-  <body>
+<body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Bitorama</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bitorama</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            {% if request.session.user.id is not None %}
-            <li class="active"><a href="/">Welcome, {{request.session.user.first_name}}</a></li>
-            {% else %}
-            <li class="active"><a href="/login_page">Sign In</a></li>
-            <li><a href="/register_page">Register</a></li>
-            {% endif %}
-            <li><a href="/logout">logout</a></li>
-            <li><a href="">option4</a></li>
-          </ul>
+            <ul class="nav navbar-nav">
+                {% if request.session.user.id is not None %}
+                <li class="active"><a href="/">Welcome, {{request.session.user.first_name}}</a></li>
+                <li><a href="/logout">logout</a></li>
+                {% else %}
+                <li class="active"><a href="/login_page">Sign In</a></li>
+                <li><a href="/register_page">Register</a></li>
+                {% endif %}
+                <li><a href="">option4</a></li>
+            </ul>
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container">
+<div class="container">
 
-      <div class="starter-template" style="padding-top:50px;text-align:center;">
+    <div class="starter-template" style="padding-top:50px;text-align:center;">
         <h1>Welcome to Bitorama</h1>
-        <p class="lead"></p>
-      </div>
-
+        {% if request.session.user is not None %}
+        <p class="lead">other users</p>
+        {% for user in users %}
+        {% if request.session.user.id != user.id%}
+        <p>{{user.id}}</p>
+        <p><a href="/follow/{{request.session.user.id}}/{{user.id}}">follow</a> <a href="/unfollow/{{request.session.user.id}}/{{user.id}}">unfollow</a> {{user.username}}</p>
+        {% endif%}
+        {% endfor %}
+        {% endif %}
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  </body>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
 </html>
