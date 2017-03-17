@@ -42,21 +42,21 @@ class Tag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = TagManager()
-    # def get_items(self):
-    #     results = self.items
-    #     for child in self.children.all():
-    #         child_results = child.getItems()
-    #         results |= child_results
-    # def get_path_string(self):
-    #     if (self.parent):
-    #         return self.parent.get_path_string() + " > " + self.name
-    #     else:
-    #         return self.name
-    # def get_path(self):
-    #     if (self.parent):
-    #         return self.parent.get_path() + [self.id]
-    #     else:
-    #         return [self.id]
+    def get_items(self):
+        results = self.items
+        for child in self.children.all():
+            child_results = child.getItems()
+            results |= child_results
+    def get_path_string(self):
+        if (self.parent):
+            return self.parent.get_path_string() + " > " + self.name
+        else:
+            return self.name
+    def get_path(self):
+        if (self.parent):
+            return self.parent.get_path() + [self.id]
+        else:
+            return [self.id]
     def buildChildTagSelect(self, indent):
         html = "<option value="+str(self.id)+">"+("&#160;"*indent)+self.name+"</options>\n"
         for child in self.children.all():
