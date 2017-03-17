@@ -21,6 +21,6 @@ from django.conf.urls import include
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('apps.usersapp.urls')),
-    url(r'^activities', include('apps.activitiesapp.urls')),
-    url(r'^products', include('apps.itemsapp.urls')),
+    url(r'^activities/', include('apps.activitiesapp.urls')),
+    url(r'^products/', include('apps.itemsapp.urls')),
 ]
