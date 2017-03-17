@@ -7,9 +7,10 @@ urlpatterns = [
     url(r'^login$', views.login),
     url(r'^register_page$', views.register_page),
     url(r'^register$', views.register),
+    url(r'^logout$', views.logout),
     url(r'^dashboard$', views.dashboard),
     url(r'^userInfo$', views.getInfo),
-    url(r'^send/(?P<sender_id>\d+)/(?P<receiver_id>\d+)$',views.send_message),
-    url(r'^del_message/(?P<message_id>\d+)$',views.delete_message),
-    url(r'^follow/(?P<follower_id>\d+)/(?P<followed_id>\d+)$',views.follow)
+    url(r'^send/(?P<sender_id>\d+)/(?P<receiver_id>\d+)$', views.send_message),
+    url(r'^del_message/(?P<message_id>\d+)$', views.delete_message),
+    url(r'^follow/(?P<follower_id>\d+)/(?P<followed_id>\d+)$', views.follow)
 ]

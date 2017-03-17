@@ -26,10 +26,14 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
+            {% if request.session.user.id is not None %}
+            <li class="active"><a href="/">Welcome, {{request.session.user.first_name}}</a></li>
+            {% else %}
             <li class="active"><a href="/login_page">Sign In</a></li>
             <li><a href="/register_page">Register</a></li>
-            <li><a href="#contact">option3</a></li>
-            <li><a href="#contact">option4</a></li>
+            {% endif %}
+            <li><a href="/logout">logout</a></li>
+            <li><a href="">option4</a></li>
           </ul>
         </div>
       </div>
