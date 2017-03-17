@@ -1,9 +1,3 @@
-# from __future__ import unicode_literals
-#
-# from django.db import models
-# from django.core.validators import MaxValueValidator, MinValueValidator
-#
-# from ..usersapp.models import Profile, Address, Message, Connection
 # from ..itemsapp.models import Item, Tagging, Tag
 #
 #
