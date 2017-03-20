@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls import include
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^users/', include('apps.usersapp.urls')),
-    url(r'^activities', include('apps.activitiesapp.urls')),
-    url(r'^products', include('apps.itemsapp.urls')),
+    url(r'^', include('apps.usersapp.urls')),
+    url(r'^activities/', include('apps.activitiesapp.urls')),
+    url(r'^products/', include('apps.itemsapp.urls')),
 ]

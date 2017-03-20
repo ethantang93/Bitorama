@@ -1,0 +1,23 @@
+<h1>Item details</h1>
+<p>Name{{itemDetails.item_name}}</p>
+<p>views{{itemDetails.views}}</p>
+<p>TAgs{{itemDetails.tags.name}}</p>
+
+add a category to this item select one category
+<form action="/products/category/{{itemDetails.id}}" method="post">
+  {% csrf_token %}
+  <select name="mainCat">
+    <option value="Food">Food</option>
+    <option value="Tech">Tech</option>
+  </select>
+  <button type="submit" name="button">add category</button>
+</form>
+
+<form action="/products/subCat" method="post">
+  {% csrf_token %}
+  <select name="subCat">
+    <option value="snacks">Snacks</option>
+    <option value="harware">Harware</option>
+  </select>
+  <button type="submit" name="button">add sub Catergory</button>
+</form>
