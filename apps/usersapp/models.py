@@ -12,14 +12,14 @@ class ProfileManager(UserManager):
         # check if the inputs are valid
         errors = self.validate_inputs(request)
         if len(errors) > 0:
-            return False, errors
+            return (False, errors)
         # check if there is an existing username
         try:
             Profile.objects.get(username=request.POST['username'])
             errors.append('user name already exist!')
             return (False, errors)
         except:
-            return (True, "user name not taken")
+            return (True, errors)
 
     def validateLogin(self, request):
         try:
