@@ -8,7 +8,6 @@ class ItemManager(models.Manager):
         print 'item Manager'
         userid = request.session['user']['id']
         print userid
-        # createTag = Tag(name=request.POST['category']).save()
         userObj = Profile.objects.get(id = userid)
         print userObj
         createdItem = Item(item_name = request.POST['item'],price = request.POST['price'],views= 1, description = request.POST['description'], seller= userObj, tag_id= request.POST['category'] ).save()

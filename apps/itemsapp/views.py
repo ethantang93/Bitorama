@@ -11,6 +11,10 @@ def index(request):
     return render(request, 'bitorama/itemsPage.html', context)
 
 def create(request):
+    tag = Tag.objects.get(id=4)
+    print 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
+    print tag
+    Tag.get_items(tag)
     returnData = Item.objects.makeItem(request)
     # print request.session['user'].get('username')
     return redirect('/products')
