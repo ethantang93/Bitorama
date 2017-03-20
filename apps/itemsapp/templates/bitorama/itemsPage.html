@@ -2,11 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>products</title>
   </head>
   <body>
     <h1>Item name</h1>
-    <button name="button">Buy this item</button>
     <table>
       <tr>
       <thead>
@@ -19,6 +18,7 @@
       </tr>
       </thead>
     <tbody>
+      afasdfaf
       {% for item in allItems %}
     <tr>
       <td><a href="/products/item/{{item.id}}">{{item.item_name}}</a></td>
@@ -26,6 +26,8 @@
       <td>{{item.description}}</td>
       <td>{{item.views}}</td>
       <td>{{item.seller.first_name}}</td>
+      <td>{{item.tag.name}}</td>
+
     </tr>
     {% endfor %}
     </tbody>
@@ -38,12 +40,6 @@
       quantity<input type="text" name="quantity">
       category{{tags|safe}}
       <button type="submit" name="button">post</button>
-    </form>
-
-    <br>
-    <form action="/products/category" method="post">
-      {% csrf_token %}
-      category<input type="text" name="category">
     </form>
 
   </body>
