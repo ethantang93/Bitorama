@@ -7,11 +7,43 @@
   <body>
     <h1>Item name</h1>
     <button name="button">Buy this item</button>
-
+    <table>
+      <tr>
+      <thead>
+        <th>name</th>
+        <th>price</th>
+        <th>description</th>
+        <th>views</th>
+        <th>seller</th>
+        <th>Category</th>
+      </tr>
+      </thead>
+    <tbody>
+      {% for item in allItems %}
+    <tr>
+      <td><a href="/products/item/{{item.id}}">{{item.item_name}}</a></td>
+      <td>{{item.price}}</td>
+      <td>{{item.description}}</td>
+      <td>{{item.views}}</td>
+      <td>{{item.seller.first_name}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
     <form action="/products/item" method="post">
       {% csrf_token %}
-      post a review<input type="text" name="review">
+      item name<input type="text" name="item">
+      price<input type="number" name="price">
+      description<input type="text" name="description">
+      quantity<input type="text" name="quantity">
+      category{{tags|safe}}
       <button type="submit" name="button">post</button>
+    </form>
+
+    <br>
+    <form action="/products/category" method="post">
+      {% csrf_token %}
+      category<input type="text" name="category">
     </form>
 
   </body>
