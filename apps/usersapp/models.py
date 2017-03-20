@@ -12,7 +12,7 @@ class ProfileManager(UserManager):
         # check if the inputs are valid
         errors = self.validate_inputs(request)
         if len(errors) > 0:
-            return False, errors
+            return (False, errors)
         # check if there is an existing username
         try:
             Profile.objects.get(username=request.POST['username'])
@@ -22,6 +22,16 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
+        try:
+            user = User.objects.get(email=request.POST['email'])
+            print request.POST
+            # The email matched a record in the database, now test passwords
+            password = request.POST['password'].encode()
+            if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
+                return (True, user)
+
+        except:
+            pass
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             return (True, user)
