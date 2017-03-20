@@ -19,7 +19,7 @@ class ProfileManager(UserManager):
             errors.append('user name already exist!')
             return (False, errors)
         except:
-            return (True, user)
+            return (True, "user name not taken")
 
     def validateLogin(self, request):
         try:
