@@ -3,9 +3,9 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'^(?P<id>\d+)$', views.get),
+    # url(r'^(?P<id>\d+)$', views.get),
     url(r'^create$', views.create),
-    url(r'^delete/(?P<id>\d+)$', views.delete),
+    url(r'^delete/(?P<id>\d+)$', views.deleteReview),
     url(r'^user/(?P<id>\d+)$', views.getUser),
     url(r'^item/(?P<id>\d+)$', views.getItem),
     url(r'^user/reviews/(?P<id>\d+)$', views.getUserReviews),
