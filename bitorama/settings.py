@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'djng',
+    'apps.viewsapp',
     'apps.usersapp',
     'apps.itemsapp',
     'apps.activitiesapp',
