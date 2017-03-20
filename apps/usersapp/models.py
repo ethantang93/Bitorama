@@ -29,6 +29,9 @@ class ProfileManager(UserManager):
             password = request.POST['password'].encode()
             if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
                 return (True, user)
+
+        except:
+            pass
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             return (True, user)
