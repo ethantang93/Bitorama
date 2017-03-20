@@ -1,21 +1,36 @@
 from django.shortcuts import render, redirect
-from models import Profile
+from models import Profile, Connection, Message, UploadFileForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 # Create your views here.
+
+
 def index(request):
-    return render(request,'usersapp/index.html')
+    users = Profile.objects.all()
+    context = {'users': users}
+    return render(request, 'usersapp/index.html', context)
+
+
+def login_page(request):
+    return render(request, 'usersapp/login.html')
+
+
 def register_page(request):
-    return render(request,'usersapp/register.html')
+    return render(request, 'usersapp/register.html')
+
+
 def dashboard(request):
-    return render(request,'usersapp/dashboard.html')
+    return render(request, 'usersapp/dashboard.html')
+
 
 def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
-        login_user(request,user[1])
-        return redirect('/dashboard')
-    print_messages(request,user[1])
-    return redirect('/users')
+        login_user(request, user[1])
+        return redirect('/')
+    print_messages(request, user[1])
+    return redirect('/login_page')
+
 
 def register(request):
     username = request.POST['username']
@@ -25,40 +40,66 @@ def register(request):
     password = request.POST['password']
 
     user = Profile.objects.validateReg(request)
-    if (user[0]):
-        user = Profile.objects.create_user(username,email,password)
+    if user[0]:
+        user = Profile.objects.create_user(username, email, password)
         user.last_name = last_name
         user.first_name = first_name
         user.save()
-        login_user(request,user[1])
-        return redirect('/dashboard')
+        login_user(request, user)
+        return redirect('/')
 
     print("input is not valid")
-    print_messages(request,user[1])
+    print_messages(request, user[1])
     return redirect('/register_page')
 
-def login_user(request,user):
-    print user
+
+def login_user(request, user):
     request.session['user'] = {
-    'id' : user.id,
-    'first_name' : user.first_name,
-    'last_name' : user.last_name,
-    'username' : user.username,
-    'email' : user.email
+        'id': user.id,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'username': user.username,
+        'email': user.email
     }
     # request.session['user'] = user
-    # return redirect('/dashboard')
-    # print("*"*100+"input is not valid")
-    # return redirect('/users')
+    return redirect('/', request)
+
+
+def logout(request):
+    request.session.pop('user')
+    return redirect('/')
+
 
 def print_messages(request, message_list):
     for message in message_list:
         messages.add_message(request, messages.INFO, message)
 
-def getInfo(request):
-    print 'in the getinfo Method'
 
-    return render(request,'usersapp/user.html')
+def getInfo(request):
+    print ('the get info method')
+
+    return render(request, 'usersapp/user.html')
+
 
 def home(request):
     return render(request, 'usersapp/home.html')
+
+
+def send_message(request, sender, receiver):
+    message = Message.objects.send_message(request, sender, receiver)
+    if message[0] is False:
+        print_messages(request, message[1])
+    return redirect(request, '/dashboard')
+
+
+def delete_message(request, message_id):
+    Message.objects.delete_message(message_id)
+
+
+def follow(request, follower, followed):
+    Connection.objects.follow(follower, followed)
+    return redirect('/')
+
+def unfollow(request, follower, followed):
+    Connection.objects.unfollow(follower, followed)
+    return redirect('/')
