@@ -19,9 +19,16 @@ class ProfileManager(UserManager):
             errors.append('user name already exist!')
             return (False, errors)
         except:
-            return (True, errors)
+            return (True, user)
 
     def validateLogin(self, request):
+        try:
+            user = User.objects.get(email=request.POST['email'])
+            print request.POST
+            # The email matched a record in the database, now test passwords
+            password = request.POST['password'].encode()
+            if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
+                return (True, user)
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             return (True, user)
