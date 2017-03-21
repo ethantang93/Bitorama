@@ -1,9 +1,13 @@
 from __future__ import unicode_literals
-from django.contrib.auth.models import User
-from django.db import models
-from django.contrib.auth.models import User, UserManager
-from django.contrib.auth import authenticate
+
+import json
 import re
+
+from django import forms
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User, UserManager
+from django.db import models
+
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9\.\+_-]+@[a-zA-Z0-9\._-]+\.[a-zA-Z]*$')
 
 
@@ -22,10 +26,13 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
-        print request
-        print request.POST
-        user = None
-        # user = authenticate(username=request.POST['loginForm']['username'], password=request.POST['loginForm']['password'])
+        data = json.loads(request.body)
+        user = authenticate(username=data['username'], password=data['password'])
+        user = forms.models.model_to_dict(user)
+        # Remove password and query set objects from dictionary
+        user.pop('groups')
+        user.pop('user_permissions')
+        user.pop('password')
         if user is not None:
             return (True, user)
         else:
@@ -136,7 +143,6 @@ class Connection(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = ConnectionManager()
 
-from django import forms
 class UploadFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = forms.FileField()

@@ -20,11 +20,14 @@ app.config(function($routeProvider, $httpProvider){
 });
 
 app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory', function($scope, $routeParams, $location, UserFactory) {
-    $scope.test = 'this is a test message'
+    $scope.test = 'this is a test message';
+    $scope.loginForm = {};
 
     $scope.login = function() {
-        data = $scope.loginForm;
-        $scope.loginForm = {};
+        data = {
+            'username': $scope.loginForm.username,
+            'password': $scope.loginForm.password
+        }
         UserFactory.login(data).then(function(response) {
             console.log(response.data);
             if (response.data[0]) {
@@ -35,6 +38,7 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
         }).catch(function(response) {
             console.log("Errors: "+ response.data);
         });
+        // $scope.loginForm = {};
     }
 
     $scope.logout = function() {
