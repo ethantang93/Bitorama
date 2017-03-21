@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 def index(request):
-    # request.session.clear()
+    print request.session
     return render(request, 'viewsapp/index.html')

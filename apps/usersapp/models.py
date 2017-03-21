@@ -28,11 +28,6 @@ class ProfileManager(UserManager):
     def validateLogin(self, request):
         data = json.loads(request.body)
         user = authenticate(username=data['username'], password=data['password'])
-        user = forms.models.model_to_dict(user)
-        # Remove password and query set objects from dictionary
-        user.pop('groups')
-        user.pop('user_permissions')
-        user.pop('password')
         if user is not None:
             return (True, user)
         else:

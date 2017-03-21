@@ -30,7 +30,8 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
         }
         UserFactory.login(data).then(function(response) {
             console.log(response.data);
-            if (response.data[0]) {
+            if (response.data.success) {
+                $scope.loginForm ={};
                 $location.url('/');
             } else {
                 console.log(response.data[1]);

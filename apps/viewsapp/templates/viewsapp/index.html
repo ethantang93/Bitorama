@@ -53,7 +53,7 @@
           <ul class="nav navbar-nav">
             {% if request.session.user.id is not None %}
             <li class="active"><a href="/">Welcome, {{request.session.user.first_name}}</a></li>
-            <li><a ng-click="logout()">Log Out</a>/li>
+            <li><a ng-click="logout()">Log Out</a></li>
             {% else %}
             <li class="active"><a href="#!/login">Sign In</a></li>
             <li><a href="#!/register">Register</a></li>

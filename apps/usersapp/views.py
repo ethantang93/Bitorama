@@ -1,8 +1,12 @@
-from django.shortcuts import render, redirect
-from models import Profile, Connection, Message, UploadFileForm
 from django.contrib import messages
+from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+
+from models import Connection, Message, Profile, UploadFileForm
+
+
 # Create your views here.
 
 def index(request):
@@ -25,12 +29,19 @@ def dashboard(request):
 @csrf_exempt
 def login(request):
     user = Profile.objects.validateLogin(request)
-    return JsonResponse({'data': user})
-    # if (user[0]):
-    #     login_user(request, user[1])
-    #     return redirect('/')
-    # print_messages(request, user[1])
-    # return redirect('/login_page')
+    jsonuser = model_to_dict(user[1])
+    # Remove password and query set objects from dictionary
+    jsonuser.pop('groups')
+    jsonuser.pop('user_permissions')
+    jsonuser.pop('password')
+    if (user[0]):
+        login_user(request, user[1])
+    else:
+        print_messages(request, user[1])
+    return JsonResponse({
+        'success': user[0],
+        'data': jsonuser
+        })
 
 
 def register(request):
