@@ -1,11 +1,11 @@
 <div class="container">
   <h3>please log in</h3>
-  <form class="userReg" action="login()">
+  <form class="userReg">
     <!--{% csrf_token %}-->
     <p>username</p>
-    <input type="text" name="username" value="">
+    <input type="text" name="username" value="" ng-model="loginForm.username">
     <p>password </p>
-    <input type="password" name="password" value=""> 
+    <input type="password" name="password" value="" ng-model="loginForm.password"> 
     <!--{% if messages %}
       <ul class="messages">
         {% for message in messages %}
@@ -13,7 +13,7 @@
         {% endfor %}
       </ul>
     {% endif %}-->
-    <input type="submit" name="" value="submit">
+    <input type="submit" name="" value="submit" ng-click="login()">
     <p><a href="/register_page">New User? Register Here!</a></p>
     <p><a href="/">Back</a></p>
 

@@ -1,6 +1,8 @@
 var app = angular.module("app", ["ngRoute", "djng.urls"]);
 
 app.config(function($routeProvider, $httpProvider){
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     $routeProvider
         .when('/', {
@@ -20,6 +22,21 @@ app.config(function($routeProvider, $httpProvider){
 app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory', function($scope, $routeParams, $location, UserFactory) {
     $scope.test = 'this is a test message'
 
+    $scope.login = function() {
+        data = $scope.loginForm;
+        $scope.loginForm = {};
+        UserFactory.login(data).then(function(response) {
+            console.log(response.data);
+            if (response.data[0]) {
+                $location.url('/');
+            } else {
+                console.log(response.data[1]);
+            }
+        }).catch(function(response) {
+            console.log("Errors: "+ response.data);
+        });
+    }
+
     $scope.logout = function() {
         UserFactory.logout().then(function(response) {
             console.log(response);
@@ -28,12 +45,17 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
             }
         }).catch(function() {
             $location.url('/');
-        })
+        });
     }
 }])
 
 app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($http, $routeParams, djangoUrl) {
     var factory = {};
+
+    factory.login = function(data) {
+        loginUrl = djangoUrl.reverse('users-app:login')
+        return $http.post(loginUrl, data)
+    }
 
     factory.logout = function() {
         logoutUrl = djangoUrl.reverse('users-app:logout')

@@ -25,11 +25,12 @@ def dashboard(request):
 @csrf_exempt
 def login(request):
     user = Profile.objects.validateLogin(request)
-    if (user[0]):
-        login_user(request, user[1])
-        return redirect('/')
-    print_messages(request, user[1])
-    return redirect('/login_page')
+    return JsonResponse({'data': user})
+    # if (user[0]):
+    #     login_user(request, user[1])
+    #     return redirect('/')
+    # print_messages(request, user[1])
+    # return redirect('/login_page')
 
 
 def register(request):

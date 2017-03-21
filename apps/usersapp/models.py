@@ -22,20 +22,14 @@ class ProfileManager(UserManager):
             return (True, errors)
 
     def validateLogin(self, request):
-        try:
-            user = User.objects.get(email=request.POST['email'])
-            print request.POST
-            # The email matched a record in the database, now test passwords
-            password = request.POST['password'].encode()
-            if bcrypt.hashpw(password, user.pw_hash.encode()) == user.pw_hash.encode():
-                return (True, user)
-
-        except:
-            pass
-        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        print request
+        print request.POST
+        user = None
+        # user = authenticate(username=request.POST['loginForm']['username'], password=request.POST['loginForm']['password'])
         if user is not None:
             return (True, user)
-        return (False, ["Email/password don't match."])
+        else:
+            return (False, ["Email/password do not match."])
 
     def validate_inputs(self, request):
         errors = []
@@ -115,8 +109,8 @@ class MessageManager(models.Manager):
 
 
 class Message(models.Model):
-    sender = models.ForeignKey('Profile',related_name ='message_sent')
-    receiver = models.ForeignKey('Profile',related_name = 'message_received')
+    sender = models.ForeignKey('Profile', related_name='message_sent')
+    receiver = models.ForeignKey('Profile', related_name='message_received')
     content = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
