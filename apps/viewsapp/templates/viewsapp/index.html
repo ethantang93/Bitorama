@@ -1,38 +1,88 @@
 <!DOCTYPE html>
 <html ng-app="app">
-  <head>
-    <meta charset="utf-8">
-    <title>Bit-o-rama</title>
 
-    {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<head>
+  <meta charset="utf-8">
+  <title>Bit-o-rama</title>
 
-    <!-- Latest compiled and minified JavaScript for Angular -->
-    <script src="{% static "viewsapp/angular.js" %}"></script>
+  {% load static %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-    <!-- Latest compiled and minified JavaScript for Angular-Route -->
-    <script src="{% static "viewsapp/angular-route.min.js" %}"></script>
+  <!-- Latest compiled and minified JavaScript for Angular -->
+  <script src="{% static "viewsapp/angular.js" %}"></script>
 
-    <!-- Angular App-->
-    <script src="{% static "viewsapp/angular-app.js" %}"></script>
+  <!-- Latest compiled and minified JavaScript for Angular-Route -->
+  <script src="{% static "viewsapp/angular-route.min.js" %}"></script>
 
-    <!-- Latest compiled and minified CSS for Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Django-Angular JavaScript -->
+  <script src="{% static 'djng/js/django-angular.js' %}"></script>
 
-    <!-- Optional theme for Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Angular App-->
+  <script src="{% static "viewsapp/angular-app.js" %}"></script>
 
-    <!-- Latest compiled and minified JavaScript for Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified CSS for Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+
+  <!-- Optional theme for Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript for Bootstrap -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
 
 
-  </head>
-  <body>
-    <div id="wrapper">
-      <h1>main page</h1>
+</head>
+
+<body>
+  <div id="wrapper" ng-controller="UserCtrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          <a class="navbar-brand" href="#">Bitorama</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% if request.session.user.id is not None %}
+            <li class="active"><a href="/">Welcome, {{request.session.user.first_name}}</a></li>
+            <li><a ng-click="logout()">Log Out</a>/li>
+            {% else %}
+            <li class="active"><a href="#!/login">Sign In</a></li>
+            <li><a href="#!/register">Register</a></li>
+            {% endif %}
+            <li><a href="">option4</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="main">
+      <div class="container">
+
+        <div class="starter-template" style="padding-top:50px;text-align:center;">
+          <h1>Welcome to Bitorama</h1>
+          {% if request.session.user is not None %}
+          <p class="lead">other users</p>
+          {% for user in users %} {% if request.session.user.id != user.id%}
+          <p>{{user.id}}</p>
+          <p><a href="/follow/{{request.session.user.id}}/{{user.id}}">follow</a> <a href="/unfollow/{{request.session.user.id}}/{{user.id}}">unfollow</a>      {{user.username}}</p>
+          {% endif%} {% endfor %} {% endif %}
+        </div>
+
+      </div>
       <div ng-view="">
         <!--partial views-->
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

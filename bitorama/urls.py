@@ -19,8 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('apps.usersapp.urls')),
-    url(r'^test', include('apps.viewsapp.urls')),
-    url(r'^activities/', include('apps.activitiesapp.urls')),
-    url(r'^products/', include('apps.itemsapp.urls')),
+    url(r'^users/', include('apps.usersapp.urls', namespace='users-app')),
+    url(r'^activities/', include('apps.activitiesapp.urls', namespace='activities-app')),
+    url(r'^products/', include('apps.itemsapp.urls', namespace='items-app')),
+    url(r'^', include('apps.viewsapp.urls', namespace='views-app')),
 ]

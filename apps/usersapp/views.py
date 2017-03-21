@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from models import Profile, Connection, Message, UploadFileForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
-
 
 def index(request):
     users = Profile.objects.all()
@@ -22,7 +22,7 @@ def register_page(request):
 def dashboard(request):
     return render(request, 'usersapp/dashboard.html')
 
-
+@csrf_exempt
 def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
@@ -66,8 +66,11 @@ def login_user(request, user):
 
 
 def logout(request):
+    print 'logout in views'
+    print request.session
     request.session.pop('user')
-    return redirect('/')
+    print request.session
+    return JsonResponse({'status': True})
 
 
 def print_messages(request, message_list):

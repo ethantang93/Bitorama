@@ -7,10 +7,10 @@ app.config(function($routeProvider, $httpProvider){
             templateUrl:"static/viewsapp/partials/dashboard.html"
         })
         .when('/login', {
-            templateUrl:"static/viewsapp/partials/login.html"
+            templateUrl:"partials/login.html"
         })
         .when('/register', {
-            templateUrl:"static/viewsapp/partials/register.html"
+            templateUrl:"partials/register.html"
         })
         .otherwise({
             redirect_to:"/"
@@ -21,23 +21,24 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
     $scope.test = 'this is a test message'
 
     $scope.logout = function() {
-        UserFactory.logout().then(function(response) {
+        console.log('logout controller function');
+        UserFactory.logout().success(function(response) {
             console.log(response);
             if(response.status) {
                 $location.url('/');
             }
-        }).catch(function() {
+        }).error(function() {
             $location.url('/');
         })
     }
 }])
 
-app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($http, $routeParams, djangoUrl) {
+app.factory('UserFactory', ['$http', '$routeParams', function ($http, $routeParams) {
     var factory = {};
 
     factory.logout = function() {
-        logoutUrl = djangoUrl.reverse('users-app:logout')
-        return $http.get(logoutUrl);
+        console.log('logout factory function');
+        return $http.get('/users/logout');
     }
 
     return factory;
