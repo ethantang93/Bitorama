@@ -20,8 +20,15 @@ from models import Connection, Message, Profile, UploadFileForm
 #     return jsonuser
 
 def index(request):
-    users = Profile.objects.all()
-    context = {'users': users}
+    if 'user' in request.session:
+        me = Profile.objects.select_related().get(id=request.session['user']['id'])
+        users = Profile.objects.select_related()
+        for user in users:
+            user.conversation = user.message_sent.filter(receiver_id = request.session['user']['id']) | me.message_sent.filter(receiver_id=user.id)
+            user.conversation = user.conversation.order_by('created_at')
+        context = {'users': users}
+    else:
+        context = {}
     return render(request, 'usersapp/index.html', context)
 
 
@@ -131,11 +138,11 @@ def home(request):
     return render(request, 'usersapp/home.html')
 
 
-def send_message(request, sender, receiver):
-    message = Message.objects.send_message(request, sender, receiver)
+def send_message(request, sender_id, receiver_id):
+    message = Message.objects.send_message(request, sender_id, receiver_id)
     if message[0] is False:
         print_messages(request, message[1])
-    return redirect(request, '/dashboard')
+    return redirect('/')
 
 
 def delete_message(request, message_id):

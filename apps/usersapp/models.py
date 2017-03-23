@@ -50,6 +50,8 @@ class ProfileManager(UserManager):
         users = Profile.objects.all()
             # .exclude(id=request.session['user']['id'])
         return users
+    # def get_conversation(self, sender, receiver):
+    #
 
 
 class Profile(User):
@@ -83,27 +85,27 @@ class Address(models.Model):
 class MessageManager(models.Manager):
     def validator(self, request):
         errors = []
-        if request.POST['receiver'] is None:
-            errors.append('must specify a person to send this message to')
-        if request.POST['sender'] is None:
-            errors.append('must specify a sender of this message')
+        # if request.POST['receiver'] is None:
+        #     errors.append('must specify a person to send this message to')
+        # if request.POST['sender'] is None:
+        #     errors.append('must specify a sender of this message')
         if len(request.POST['content']) <= 0:
             errors.append("please don't send a empty message")
-        if len(request.POST['subject']) <= 0:
-            errors.append('please enter a subject of this message')
+        # if len(request.POST['subject']) <= 0:
+        #     errors.append('please enter a subject of this message')
         return errors
 
     def get_user_messages(self, request):
         messages = Message.objects.get(sender=request.POST['sender'])
         return messages
 
-    def send_message(self, request, send_by, send_to):
+    def send_message(self, request, sender_id, receiver_id):
         errors = self.validator(request)
         if len(errors) > 0:
             return (False, errors)
-        # send_by = Profile.objects.get(username = request.POST['sender'])
-        # send_to = Profile.objects.get(username = request.POST['receiver'])
-        message = self.create(sender=send_by, receiver=send_to, content=request.POST['content'], subject=request.POST['subject'])
+        send_by = Profile.objects.get(id = sender_id)
+        send_to = Profile.objects.get(id = receiver_id)
+        message = self.create(sender=send_by, receiver=send_to, content=request.POST['content'])
         return (True, message)
 
     def delete_message(self, request, message_id):

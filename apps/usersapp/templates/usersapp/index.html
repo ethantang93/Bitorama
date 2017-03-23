@@ -45,13 +45,22 @@
     <div class="starter-template" style="padding-top:50px;text-align:center;">
         <h1>Welcome to Bitorama</h1>
         {% if request.session.user is not None %}
-        <p class="lead">other users</p>
-        {% for user in users %}
-        {% if request.session.user.id != user.id%}
-        <p>{{user.id}}</p>
-        <p><a href="/follow/{{request.session.user.id}}/{{user.id}}">follow</a> <a href="/unfollow/{{request.session.user.id}}/{{user.id}}">unfollow</a> {{user.username}}</p>
-        {% endif%}
-        {% endfor %}
+          <p class="lead">other users</p>
+            {% for user in users %}
+              {% if request.session.user.id != user.id%}
+                <p>user_id: {{user.id}}</p>
+                <p><a href="/follow/{{request.session.user.id}}/{{user.id}}">follow</a> <a href="/unfollow/{{request.session.user.id}}/{{user.id}}">unfollow</a> {{user.username}}</p>
+                <p>message {{user.username}} below</p>
+                {%for message in user.conversation%}
+                    {{message.content}}<br>
+                {%endfor%}
+                <form class="" action="/send_message/{{request.session.user.id}}/{{user.id}}" method="post">
+                    {% csrf_token %}
+                    <input type="textfield" name="content" value="">
+                    <input type="submit" name="submit" value="submit">
+                </form>
+              {% endif%}
+            {% endfor %}
         {% endif %}
     </div>
 
