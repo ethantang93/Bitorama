@@ -26,7 +26,7 @@ class ActivityManager(models.Manager):
 
 class TransactionQuerySet(ActivityQuerySet):
     def winning(self):
-        return self.get_queryset().filter(type_of=1)
+        return self.filter(type_of=1)
 
 class TransactionManager(ActivityManager):
     def get_queryset(self):
@@ -36,6 +36,9 @@ class TransactionManager(ActivityManager):
         newTransaction = Transaction(data)
         newTransaction.save()
         return newTransaction
+
+    def winning(self, user=False, item=False):
+        return None
 
     def winning_bid(self, user=False, item=False):
         result = Transaction.winning()
@@ -87,10 +90,3 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = ReviewManager()
 
-# class Activity(models.Model):
-#     owner = models.ForeignKey(Profile, related_name='user_activity')
-#     subject = models.ForeignKey(Item, related_name='item_activity')
-#     type_of = models.IntegerField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     objects = ActivityManager()
