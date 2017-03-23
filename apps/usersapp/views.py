@@ -29,19 +29,23 @@ def dashboard(request):
 @csrf_exempt
 def login(request):
     user = Profile.objects.validateLogin(request)
-    jsonuser = model_to_dict(user[1])
-    # Remove password and query set objects from dictionary
-    jsonuser.pop('groups')
-    jsonuser.pop('user_permissions')
-    jsonuser.pop('password')
     if (user[0]):
+        jsonuser = model_to_dict(user[1])
+        # Remove password and query set objects from dictionary
+        jsonuser.pop('groups')
+        jsonuser.pop('user_permissions')
+        jsonuser.pop('password')
         login_user(request, user[1])
+        return JsonResponse({
+            'success': user[0],
+            'data': jsonuser
+            })
     else:
         print_messages(request, user[1])
-    return JsonResponse({
-        'success': user[0],
-        'data': jsonuser
-        })
+        return JsonResponse({
+            'success': user[0],
+            'data': user[1]
+            })
 
 
 def register(request):
