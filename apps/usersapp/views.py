@@ -1,13 +1,24 @@
+import json
+
 from django.contrib import messages
 from django.forms.models import model_to_dict
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from models import Connection, Message, Profile, UploadFileForm
-import json
+
 
 # Create your views here.
+
+# def json_user(user):
+#     # Convert object to dictionary
+#     jsonuser = model_to_dict(user)
+#     # Remove password and query set objects from dictionary
+#     jsonuser.pop('groups')
+#     jsonuser.pop('user_permissions')
+#     jsonuser.pop('password')
+#     return jsonuser
 
 def index(request):
     users = Profile.objects.all()
@@ -26,28 +37,33 @@ def register_page(request):
 def dashboard(request):
     return render(request, 'usersapp/dashboard.html')
 
-@csrf_exempt
+def check_login(request):
+    try:
+        return JsonResponse({
+            'success': True,
+            'user': request.session['user']
+            })
+    except:
+        return JsonResponse({
+            'success': False,
+            'user': None
+            })
+
 def login(request):
     user = Profile.objects.validateLogin(request)
     if (user[0]):
-        jsonuser = model_to_dict(user[1])
-        # Remove password and query set objects from dictionary
-        jsonuser.pop('groups')
-        jsonuser.pop('user_permissions')
-        jsonuser.pop('password')
         login_user(request, user[1])
         return JsonResponse({
             'success': user[0],
-            'data': jsonuser
+            'user': request.session['user']
             })
     else:
         print_messages(request, user[1])
         return JsonResponse({
             'success': user[0],
-            'data': user[1]
+            'errors': user[1]
             })
 
-@csrf_exempt
 def register(request):
     data = json.loads(request.body)
     username = data['username']
@@ -66,7 +82,7 @@ def register(request):
         login_user(request, user)
         return JsonResponse({
             'success':user_status[0],
-            'data':"success"
+            'user': request.session['user']
         })
     # if user[0]:
     #     user = Profile.objects.create_user(username, email, password)
