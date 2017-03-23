@@ -18,11 +18,10 @@ app.config(function($routeProvider, $httpProvider){
             redirect_to:"/"
         });
 });
-
 app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory', function($scope, $routeParams, $location, UserFactory) {
     $scope.test = 'this is a test message';
     $scope.loginForm = {};
-
+    $scope.regForm = {};
     $scope.login = function() {
         data = {
             'username': $scope.loginForm.username,
@@ -42,6 +41,25 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
         // $scope.loginForm = {};
     }
 
+    $scope.register = function(){
+          data = {
+            'username':$scope.regForm.username,
+            'email':$scope.regForm.email,
+            'first_name':$scope.regForm.first_name,
+            'last_name':$scope.regForm.last_name,
+            'password':$scope.regForm.password,
+            'confirm_pw':$scope.regForm.confirm_pw
+          };
+          UserFactory.register(data).then(function(response){
+            console.log(response.data);
+            if (response.data.success) {
+                $scope.regForm ={};
+                $location.url('/');
+            }else{
+                console.log(response.data[1])
+            }
+          })
+    }
     $scope.logout = function() {
         UserFactory.logout().then(function(response) {
             console.log(response);
@@ -60,6 +78,11 @@ app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($htt
     factory.login = function(data) {
         loginUrl = djangoUrl.reverse('users-app:login')
         return $http.post(loginUrl, data)
+    }
+
+    factory.register = function(data){
+        registerUrl = djangoUrl.reverse('users-app:register')
+        return $http.post(registerUrl, data)
     }
 
     factory.logout = function() {

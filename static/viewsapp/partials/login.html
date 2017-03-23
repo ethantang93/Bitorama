@@ -1,20 +1,20 @@
 <div class="container">
   <h3>please log in</h3>
-  <form class="userReg" action="/login" method="post">
-    {% csrf_token %}
+  <form class="userReg">
+    <!--{% csrf_token %}-->
     <p>username</p>
-    <input type="text" name="username" value="">
+    <input type="text" name="username" value="" ng-model="loginForm.username">
     <p>password </p>
-    <input type="password" name="password" value=""> 
-    {% if messages %}
+    <input type="password" name="password" value="" ng-model="loginForm.password">
+    <!--{% if messages %}
       <ul class="messages">
         {% for message in messages %}
           <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
         {% endfor %}
       </ul>
-    {% endif %}
-    <input type="submit" name="" value="submit">
-    <p><a href="/register_page">New User? Register Here!</a></p>
+    {% endif %}-->
+    <input type="submit" name="" value="submit" ng-click="login()">
+    <p><a href="#!/register">New User? Register Here!</a></p>
     <p><a href="/">Back</a></p>
 
   </form>

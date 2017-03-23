@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from models import Connection, Message, Profile, UploadFileForm
-
+import json
 
 # Create your views here.
 
@@ -43,26 +43,38 @@ def login(request):
         'data': jsonuser
         })
 
-
+@csrf_exempt
 def register(request):
-    username = request.POST['username']
-    email = request.POST['email']
-    first_name = request.POST['first_name']
-    last_name = request.POST['last_name']
-    password = request.POST['password']
+    data = json.loads(request.body)
+    username = data['username']
+    email = data['email']
+    first_name = data['first_name']
+    last_name = data['last_name']
+    password = data['password']
 
-    user = Profile.objects.validateReg(request)
-    if user[0]:
+    user_status = Profile.objects.validateReg(request)
+    # jsonuser = model_to_dict(user_status[1])
+    if (user_status[0]):
         user = Profile.objects.create_user(username, email, password)
         user.last_name = last_name
         user.first_name = first_name
         user.save()
         login_user(request, user)
-        return redirect('/')
-
-    print("input is not valid")
-    print_messages(request, user[1])
-    return redirect('/register_page')
+        return JsonResponse({
+            'success':user_status[0],
+            'data':"success"
+        })
+    # if user[0]:
+    #     user = Profile.objects.create_user(username, email, password)
+    #     user.last_name = last_name
+    #     user.first_name = first_name
+    #     user.save()
+    #     login_user(request, user)
+    #     return redirect('/')
+    #
+    # print("input is not valid")
+    # print_messages(request, user[1])
+    # return redirect('/register_page')
 
 
 def login_user(request, user):
