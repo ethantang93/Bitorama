@@ -12,14 +12,15 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9\.\+_-]+@[a-zA-Z0-9\._-]+\.[a-zA-Z]*$')
 
 
 class ProfileManager(UserManager):
-    def validateReg(self, request):
+    def validateReg(self, data):
+
         # check if the inputs are valid
-        errors = self.validate_inputs(request)
+        errors = self.validate_inputs(data)
         if len(errors) > 0:
             return (False, errors)
         # check if there is an existing username
         try:
-            Profile.objects.get(username=request.POST['username'])
+            Profile.objects.get(username=data['username'])
             errors.append('user name already exist!')
             return (False, errors)
         except:
@@ -35,11 +36,12 @@ class ProfileManager(UserManager):
 
     def validate_inputs(self, request):
         errors = []
-        if len(request.POST['first_name']) < 2 or len(request.POST['last_name']) < 2:
+        data = json.loads(request.body)
+        if len(data['first_name']) < 2 or len(data['last_name']) < 2:
             errors.append("Please include a first and/or last name longer than two characters.")
-        if not EMAIL_REGEX.match(request.POST['email']):
+        if not EMAIL_REGEX.match(data['email']):
             errors.append("Please include a valid email.")
-        if len(request.POST['password']) < 6 or request.POST['password'] != request.POST['confirm_pw']:
+        if len(data['password']) < 6 or data['password'] != data['confirm_pw']:
             errors.append("Passwords must match and be at least 6 characters.")
         return errors
 
