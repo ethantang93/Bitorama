@@ -69,6 +69,7 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
           UserFactory.register(data).then(function(response){
             console.log(response.data);
             if (response.data.success) {
+                $scope.user = response.data.user;
                 $scope.regForm ={};
                 $location.url('/');
             }else{
