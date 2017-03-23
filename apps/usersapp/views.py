@@ -1,10 +1,9 @@
 import json
 
 from django.contrib import messages
-from django.forms.models import model_to_dict
+# from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
 
 from models import Connection, Message, Profile, UploadFileForm
 

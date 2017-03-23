@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 
-from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
-from ..usersapp.models import Profile, Address
 from ..itemsapp.models import Item
+from ..usersapp.models import Address, Profile
+
 
 class ActivityQuerySet(models.QuerySet):
     def userid(self, id):
@@ -76,6 +77,18 @@ class Transaction(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = TransactionManager()
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'owner_id': self.owner_id,
+            'target_id': self.target_id,
+            'address_id': self.address_id,
+            'type_of': self.type_of,
+            'amount': self.amount,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
 class Review(models.Model):
     owner = models.ForeignKey(Profile, related_name='reviewer')
     target = models.ForeignKey(Item, related_name='reviewed')
@@ -85,6 +98,18 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = ReviewManager()
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'owner_id': self.owner_id,
+            'target_id': self.target_id,
+            'subject': self.subject,
+            'content': self.content,
+            'rating': self.rating,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
 
 # class Activity(models.Model):
 #     owner = models.ForeignKey(Profile, related_name='user_activity')

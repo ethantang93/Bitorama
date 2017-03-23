@@ -1,19 +1,28 @@
-from django.shortcuts import redirect
-from models import Transaction, Review
+import json
+
+from django.forms.models import model_to_dict
+from django.http import JsonResponse
+
+from models import Review, Transaction
+
 
 def index(request):
-    reviews = Review.objects.all()
-    transactions = Transaction.objects.all()
+    reviews = Review.objects.all().as_dict()
+    transactions = Transaction.objects.all().as_dict()
     context = {
         'reviews': reviews,
         'transactions': transactions
     }
-    return context
+    return JsonResponse(context)
 
 def create(request):
     if request.method == 'POST':
-        Review.objects.create(request.POST)
-        return redirect('/item')
+        review = Review.objects.create(request.POST)
+        review = review.as_dict()
+        return JsonResponse({
+            'success': True,
+            'review': review
+            })
     else:
         return redirect('/')
 
@@ -70,4 +79,3 @@ def getItemTransactions(request, id):
         'transactions': transactions,
     }
     return context
-
