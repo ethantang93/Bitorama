@@ -37,14 +37,14 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
                 console.log($scope.user);
             }
         })
-    }
+    };
     checkLogin();
 
     $scope.login = function() {
-        data = {
+        var data = {
             'username': $scope.loginForm.username,
             'password': $scope.loginForm.password
-        }
+        };
         UserFactory.login(data).then(function(response) {
             console.log(response.data);
             if (response.data.success) {
@@ -58,10 +58,10 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
             console.log("Errors: "+ response.data);
         });
         // $scope.loginForm = {};
-    }
+    };
 
     $scope.register = function(){
-          data = {
+          var data = {
             'username':$scope.regForm.username,
             'email':$scope.regForm.email,
             'first_name':$scope.regForm.first_name,
@@ -79,7 +79,7 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
                 console.log(response.data[1])
             }
           })
-    }
+    };
     $scope.logout = function() {
         UserFactory.logout().then(function(response) {
             if(response.status) {
@@ -90,7 +90,7 @@ app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory'
             $location.url('/');
         });
     }
-}])
+}]);
 
 app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($http, $routeParams, djangoUrl) {
     var factory = {};
@@ -98,44 +98,48 @@ app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($htt
     factory.checkLogin = function() {
         checkLoginUrl = djangoUrl.reverse('users-app:check_login');
         return $http.get(checkLoginUrl);
-    }
+    };
 
     factory.login = function(data) {
         loginUrl = djangoUrl.reverse('users-app:login');
         return $http.post(loginUrl, data);
-    }
+    };
 
     factory.register = function(data){
         registerUrl = djangoUrl.reverse('users-app:register');
         return $http.post(registerUrl, data);
-    }
+    };
 
     factory.logout = function() {
         logoutUrl = djangoUrl.reverse('users-app:logout');
         return $http.get(logoutUrl);
-    }
+    };
 
     return factory;
 }]);
 
 app.controller('ItemCtrl', ['$scope', '$routeParams', '$location', 'ItemFactory', function($scope, $routeParams, $location, ItemFactory) {
     $scope.itemForm={};
+    ItemFactory.item_index().then(function(response){
+        $scope.items = response.data.items
+        console.log($scope.items);
+    });
     $scope.create_item = function(){
-        data = {
+        var data = {
             'item_name':$scope.itemForm.name,
             'price':$scope.itemForm.price,
             'description':$scope.itemForm.description,
             'seller':$scope.user,
             'quantity':$scope.itemForm.quantity
-        }
+        };
         ItemFactory.create_item(data).then(function(response){
           console.log(response.data);
           if (response.data.success) {
               $scope.itemForm ={};
               $location.url('/items');
+              $scope.items.push(response.data.item)
           }else{
-              console.log(response.data)
-              console.log("doesnt work")
+              console.log("doesnt work");
           }
         })
     }
@@ -143,9 +147,13 @@ app.controller('ItemCtrl', ['$scope', '$routeParams', '$location', 'ItemFactory'
 
 app.factory('ItemFactory',['$http','$routeParams','djangoUrl',function($http, $routeParams, djangoUrl){
     var factory = {};
+    factory.item_index = function(){
+        url = djangoUrl.reverse('items-app:item_index');
+        return $http.post(url)
+    };
     factory.create_item = function(data){
         Url = djangoUrl.reverse('items-app:create_item');
         return $http.post(Url, data)
-    }
+    };
     return factory;
 }]);
