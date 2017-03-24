@@ -32,11 +32,11 @@ def create_category(request,id):
         parent = None
     else:
         parent = request.POST['category']
-    cat = Tag.objects.create(name = request.POST['name'],parent_id=parent)
+    cat = Tag.objects.create(name=request.POST['name'], parent_id=parent)
     return redirect('/products')
 
-def itemPage(request,id):
-    item = Item.objects.get(id = id)
+def itemPage(request, id):
+    item = Item.objects.get(id=id)
     context = {
         'itemDetails': item,
         'tags':Tag.objects.getTagList(True)

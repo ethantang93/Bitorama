@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 
-from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
-from ..usersapp.models import Profile, Address
 from ..itemsapp.models import Item
+from ..usersapp.models import Address, Profile
+
 
 class ActivityQuerySet(models.QuerySet):
     def userid(self, id):
