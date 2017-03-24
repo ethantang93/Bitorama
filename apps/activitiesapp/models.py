@@ -32,16 +32,8 @@ class TransactionManager(ActivityManager):
     def get_queryset(self):
         return TransactionQuerySet(self.model, using=self._db)
 
-    def create(self, data):
-        newTransaction = Transaction(data)
-        newTransaction.save()
-        return newTransaction
-
-    def winning(self, user=False, item=False):
-        return None
-
     def winning_bid(self, user=False, item=False):
-        result = Transaction.winning()
+        result = self.get_queryset().winning()
         if user:
             result = result.by_user(user)
         if item:
@@ -55,11 +47,6 @@ class ReviewQuerySet(ActivityQuerySet):
 class ReviewManager(models.Manager):
     def get_queryset(self):
         return ReviewQuerySet(self.model, using=self._db)
-
-    def create(self, data):
-        newReview = Review(data.review)
-        newReview.save()
-        return newReview
 
     def by_rating(self, rating):
         return self.get_queryset().rating_gt(rating)
