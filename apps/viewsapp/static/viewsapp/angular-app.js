@@ -23,7 +23,6 @@ app.config(function($routeProvider, $httpProvider){
 });
 
 app.controller('UserCtrl', ['$scope', '$routeParams', '$location', 'UserFactory', function($scope, $routeParams, $location, UserFactory) {
-    $scope.test = 'this is a test message';
     $scope.loginForm = {};
     $scope.regForm = {};
     $scope.user = null;
