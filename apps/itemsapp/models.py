@@ -1,17 +1,19 @@
 from __future__ import unicode_literals
 from django.db import models
 from ..usersapp.models import Profile
-
+from django.forms.models import model_to_dict
 
 class ItemManager(models.Manager):
-    def makeItem(self,request):
-        print 'item Manager'
-        userid = request.session['user']['id']
-        print userid
-        userObj = Profile.objects.get(id = userid)
+    def create_item(self,data):
+        userObj = Profile.objects.get(id = data['seller']['id'])
         print userObj
-        createdItem = Item(item_name = request.POST['item'],price = request.POST['price'],views= 1, description = request.POST['description'], seller= userObj, tag_id= request.POST['category'] ).save()
-        return
+        try:
+            createdItem = self.create(item_name = data['item_name'],price = data['price'],views= 1, description = data['description'], seller= userObj, quantity=data['quantity'])
+            createdItem = model_to_dict(createdItem)
+            return True, createdItem
+        except:
+            error=["invalid input"]
+            return False, error
 
 
 # Create your models here.

@@ -14,6 +14,9 @@ app.config(function($routeProvider, $httpProvider){
         .when('/register', {
             templateUrl:"static/viewsapp/partials/register.html"
         })
+        .when('/items', {
+            templateUrl:"static/viewsapp/partials/items.html"
+        })
         .otherwise({
             redirect_to:"/"
         });
@@ -112,5 +115,37 @@ app.factory('UserFactory', ['$http', '$routeParams', 'djangoUrl', function ($htt
         return $http.get(logoutUrl);
     }
 
+    return factory;
+}]);
+
+app.controller('ItemCtrl', ['$scope', '$routeParams', '$location', 'ItemFactory', function($scope, $routeParams, $location, ItemFactory) {
+    $scope.itemForm={};
+    $scope.create_item = function(){
+        data = {
+            'item_name':$scope.itemForm.name,
+            'price':$scope.itemForm.price,
+            'description':$scope.itemForm.description,
+            'seller':$scope.user,
+            'quantity':$scope.itemForm.quantity
+        }
+        ItemFactory.create_item(data).then(function(response){
+          console.log(response.data);
+          if (response.data.success) {
+              $scope.itemForm ={};
+              $location.url('/items');
+          }else{
+              console.log(response.data)
+              console.log("doesnt work")
+          }
+        })
+    }
+}]);
+
+app.factory('ItemFactory',['$http','$routeParams','djangoUrl',function($http, $routeParams, djangoUrl){
+    var factory = {};
+    factory.create_item = function(data){
+        Url = djangoUrl.reverse('items-app:create_item');
+        return $http.post(Url, data)
+    }
     return factory;
 }]);

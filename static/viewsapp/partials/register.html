@@ -1,0 +1,30 @@
+<div class="container">
+  <h2>please register</h2>
+  <form>
+    <!-- {% csrf_token %} -->
+    <!-- {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %} -->
+    <p>user name</p>
+    <input type="text" name="username" value="" ng-model='regForm.username'>
+    <p>Email</p>
+    <input type="text" name="email" value="" ng-model='regForm.email'>
+    <p>first name </p>
+    <input type="text" name="first_name" value="" ng-model='regForm.first_name'>
+    <p>last name </p>
+    <input type="text" name="last_name" value="" ng-model='regForm.last_name'>
+    <p>password </p>
+    <input type="password" name="password" value="" ng-model='regForm.password'>
+    <input type="password" name="confirm_pw" value="" ng-model='regForm.confirm_pw'>
+    <input type="submit" ng-click="login()">
+    {{login}}
+    |||||
+    {{register}}
+    <p><a href="#!/login">already have account?</a></p>
+    <p><a href="/">Back</a></p>
+  </form>
+</div>

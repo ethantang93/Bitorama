@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from models import Item, Tag
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
@@ -10,15 +12,22 @@ def index(request):
     }
     return render(request, 'bitorama/itemsPage.html', context)
 
-def create(request):
-    tag = Tag.objects.get(id=4)
-    print 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
-    print tag
-    Tag.get_items(tag)
-    returnData = Item.objects.makeItem(request)
-    # print request.session['user'].get('username')
-    return redirect('/products')
-def createCat(request,id):
+def create_item(request):
+    # tag = Tag.objects.get(id=4)
+    # Tag.get_items(tag)
+    data = json.loads(request.body)
+    item = Item.objects.create_item(data)
+    if item[0]:
+        return JsonResponse({
+            'success':True,
+            'item':item[1]
+        })
+    else:
+        return JsonResponse({
+            'success':False,
+            'item':None
+        })
+def create_category(request,id):
     if request.POST['category']=='-----':
         parent = None
     else:
