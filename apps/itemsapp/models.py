@@ -6,6 +6,7 @@ from ..usersapp.models import Profile
 class ItemManager(models.Manager):
     def makeItem(self,request):
         print 'item Manager'
+        print request.POST['category']
         userid = request.session['user']['id']
         print userid
         userObj = Profile.objects.get(id = userid)
@@ -31,8 +32,8 @@ class TagManager(models.Manager):
     def getTagList(self, blank=False):
         roots = self.filter(parent=None)
         html = "<select name='category'>\n"
-        if blank:
-            html += "<option value='-----'>None</option>"
+        # if blank:
+        html += "<option value='-----'>None</option>"
         for root in roots:
             html += root.buildChildTagSelect(0)
         html += "</select>"
@@ -45,12 +46,17 @@ class Tag(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = TagManager()
     def get_items(self):
-        results = self.items
+        print "Getting items for "+self.name
+        results = self.items.all()
+        print results
         for child in self.children.all():
-            child_results = child.getItems()
+            child_results = child.get_items()
             results |= child_results
+        return results
     def get_path_string(self):
+        print 'self object', self.name
         if (self.parent):
+            print self.parent
             return self.parent.get_path_string() + " > " + self.name
         else:
             return self.name

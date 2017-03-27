@@ -1,18 +1,24 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript">
-  $(function(){
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <title></title>
+</head>
+<body>
 
-  })
-</script>
-<h1>Item details</h1>
-<p>Name{{itemDetails.item_name}}</p>
-<p>views{{itemDetails.views}}</p>
-<p>TAgs{{itemDetails.tags.name}}</p>
-
-add a category to this item select one category
-<form action="/products/category/{{itemDetails.id}}" method="post">
-  {% csrf_token %}
-  Name:<input type="text" name="name" value="">
-  Parent:{{tags|safe}}
-  <button type="submit" name="button">add category</button>
-</form>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(function(){
+    })
+    </script>
+    <h1>Item details</h1>
+    <p>Name{{itemDetails.item_name}}</p>
+    <p>views{{itemDetails.views}}</p>
+    {{categories}}<br>
+    <form action="/products/update/{{itemDetails.id}}" method="post">
+      {% csrf_token %}
+      Name:<input type="text" name="name" value="">
+      <button type="submit" name="button">add category</button>
+    </form>
+  </body>
+</html>
